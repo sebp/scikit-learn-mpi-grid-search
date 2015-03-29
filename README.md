@@ -14,6 +14,7 @@ but uses the Message Passing Interface (MPI) for parallel computing.
 
 ```python
 from mpi4py import MPI
+import numpy
 from sklearn.datasets import load_boston
 from sklearn.svm import SVR
 from grid_search import NestedGridSearchCV
