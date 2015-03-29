@@ -1,0 +1,6 @@
+*~
+*.py[co]
+*.tmp
+*.swp
+__pycache__
+.idea
