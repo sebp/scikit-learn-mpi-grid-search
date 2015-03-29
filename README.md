@@ -42,8 +42,8 @@ if MPI.COMM_WORLD.Get_rank() == 0:
 
 The result should look like this:
 
-core (Validation) | C | gamma | kernel | score (Test)
------------------ | --- | ----- | ------ | ------------
+score (Validation) | C | gamma | kernel | score (Test)
+----------------- | ---: | -----: | ------: | ------------
 fold | | | |
 1 |	-7.252490 |	0.5 |	0.000122 |	rbf |	-4.178257
 2 |	-5.662221 |	128.0 |	0.000122 |	rbf |	-5.445915
