@@ -297,6 +297,9 @@ class NestedGridSearchCV(BaseEstimator):
         and return a cross-validation object, see sklearn.cross_validation
         module for the list of possible objects.
 
+    multi_output : boolean, default=False
+        Allow multi-output y, as for multivariate regression.
+
     Attributes
     ----------
     best_params_ : pandas.DataFrame
@@ -314,7 +317,8 @@ class NestedGridSearchCV(BaseEstimator):
         parameters for the model.
     """
 
-    def __init__(self, estimator, param_grid, scoring=None, fit_params=None, cv=None, inner_cv=None):
+    def __init__(self, estimator, param_grid, scoring=None, fit_params=None, cv=None,
+                 inner_cv=None, multi_output=False):
         self.scoring = scoring
         self.estimator = estimator
         self.param_grid = param_grid
@@ -322,8 +326,7 @@ class NestedGridSearchCV(BaseEstimator):
         self.fit_params = fit_params
         self.cv = cv
         self.inner_cv = inner_cv
-
-        _check_param_grid(param_grid)
+        self.multi_output = multi_output
 
     def _grid_search(self, train_X, train_y):
         if callable(self.inner_cv):
@@ -369,7 +372,8 @@ class NestedGridSearchCV(BaseEstimator):
         slave.run()
 
     def fit(self, X, y):
-        X, y = check_X_y(X, y, force_all_finite=False)
+        X, y = check_X_y(X, y, force_all_finite=False, multi_output=self.multi_output)
+        _check_param_grid(self.param_grid)
 
         cv = _check_cv(self.cv, X, y, classifier=is_classifier(self.estimator))
 
@@ -381,3 +385,4 @@ class NestedGridSearchCV(BaseEstimator):
             self._fit_slave()
 
         return self
+
