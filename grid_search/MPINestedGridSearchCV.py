@@ -64,7 +64,7 @@ def _get_best_parameters(fold_results, param_names):
     return max_performance
 
 
-class MPIBatchWorker:
+class MPIBatchWorker(object):
     """Base class to fit and score an estimator"""
 
     def __init__(self, estimator, scorer, fit_params, verbose=False):
@@ -107,7 +107,7 @@ class MPISlave(MPIBatchWorker):
     """Receives task from root node and sends results back"""
 
     def __init__(self, estimator, scorer, fit_params):
-        super().__init__(estimator, scorer, fit_params)
+        super(MPISlave, self).__init__(estimator, scorer, fit_params)
 
     def _run_grid_search(self):
         # get data
@@ -165,7 +165,8 @@ class MPIGridSearchCVMaster(MPIBatchWorker):
     """Running on the root node and distributes work across slaves"""
 
     def __init__(self, param_grid, cv_iter, estimator, scorer, fit_params):
-        super().__init__(estimator, scorer, fit_params)
+        super(MPIGridSearchCVMaster, self).__init__(estimator,
+                                                    scorer, fit_params)
         self.param_grid = param_grid
         self.cv_iter = cv_iter
 
